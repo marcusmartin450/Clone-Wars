@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to build, for example 0.7.0
+        required: true
+        default: 0.7.0
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15-intel
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        shell: bash
+        env:
+          MANUAL_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="$MANUAL_VERSION"
+          fi
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][A-Za-z0-9.-]+)?$ ]]; then
+            echo "Invalid version: $VERSION" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Run tests
+        run: swift test
+
+      - name: Build release files
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: ./scripts/create-dmg.sh
+
+      - name: Verify app and downloads
+        shell: bash
+        run: |
+          codesign --verify --deep --strict --verbose=2 "build/Location Lab.app"
+          test "$(find build/releases -maxdepth 1 -name '*.dmg' | wc -l | tr -d ' ')" = "1"
+          test "$(find build/releases -maxdepth 1 -name '*.zip' | wc -l | tr -d ' ')" = "1"
+          cd build/releases
+          shasum -a 256 -c *-SHA256SUMS.txt
+
+      - name: Save workflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Location-Lab-${{ steps.version.outputs.version }}-macOS-x86_64
+          path: build/releases/*
+          if-no-files-found: error
+
+      - name: Publish GitHub release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: gh release create "$GITHUB_REF_NAME" build/releases/* --generate-notes --title "Location Lab $VERSION"
