@@ -1,6 +1,6 @@
 import AppKit
 import Foundation
-import MapKit
+@preconcurrency import MapKit
 
 @MainActor
 final class AppModel: ObservableObject {
