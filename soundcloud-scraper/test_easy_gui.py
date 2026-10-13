@@ -1,4 +1,10 @@
-from soundcloud_easy_gui import classify_soundcloud_url
+from soundcloud_easy_gui import classify_soundcloud_url, download_counts_message
+
+
+def test_live_download_counts_message():
+    assert download_counts_message(7, 33, 6, 0, 1) == (
+        "Processed 7 of 33. Downloaded 6, skipped 0, failed 1."
+    )
 
 
 def test_track_url():

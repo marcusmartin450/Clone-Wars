@@ -28,7 +28,7 @@
 - Click `Use This URL`.
 - Use `Choose Download Folder` before downloading if you want a different destination.
 - Track and playlist downloads run in the background so the GUI stays responsive.
-- The progress panel displays live status and final downloaded, skipped, and failed counts.
+- The progress panel displays live downloaded, skipped, and failed counts after every track, followed by final totals.
 
 ## Track Downloads
 

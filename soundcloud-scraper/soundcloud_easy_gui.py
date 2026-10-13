@@ -255,12 +255,25 @@ def download_progress_update(job_id: str, track_index: int, output: str) -> None
     update_download_job(job_id, track_index, **changes)
 
 
+def download_counts_message(current: int, total: int, completed: int, skipped: int, failed: int) -> str:
+    return (
+        f"Processed {current} of {total}. "
+        f"Downloaded {completed}, skipped {skipped}, failed {failed}."
+    )
+
+
 def run_download_job(job_id: str, tracks: list[dict], target_folder: Path) -> None:
     completed = skipped = failed = 0
     try:
         env = build_env()
         ensure_dependencies(env)
         for index, track in enumerate(tracks):
+            current = index + 1
+            update_download_job(
+                job_id,
+                current=current,
+                message=download_counts_message(index, len(tracks), completed, skipped, failed),
+            )
             update_download_job(job_id, index, status="preparing", detail="Preparing download...", percent=0)
             result = download_track(
                 track.get("track_url", ""),
@@ -282,6 +295,14 @@ def run_download_job(job_id: str, tracks: list[dict], target_folder: Path) -> No
             else:
                 failed += 1
                 update_download_job(job_id, index, status="failed", detail=result.error or "Download failed", percent=0)
+            update_download_job(
+                job_id,
+                completed=completed,
+                skipped=skipped,
+                failed=failed,
+                current=current,
+                message=download_counts_message(current, len(tracks), completed, skipped, failed),
+            )
     except Exception as exc:
         failed += 1
         update_download_job(job_id, status="failed", error=str(exc))
@@ -318,6 +339,8 @@ def start_download_job(tracks: list[dict], target_folder: Path) -> str:
             "completed": 0,
             "skipped": 0,
             "failed": 0,
+            "current": 0,
+            "total": len(tracks),
             "message": "Downloads are running.",
         }
     threading.Thread(target=run_download_job, args=(job_id, tracks, target_folder), daemon=True).start()

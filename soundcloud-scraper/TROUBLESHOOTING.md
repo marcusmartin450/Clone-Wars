@@ -58,6 +58,12 @@ cd soundcloud-scraper
 - GUI downloads use the selected folder.
 - The separate `scdl` terminal helper always uses `/Users/nickswatts/Music/usb` unless its script is edited.
 
+## The Download Totals Look Stuck
+
+- Current versions update downloaded, skipped, and failed totals after every track.
+- The `Processed X of Y` message shows playlist progress while the job is still running.
+- Older packages only updated the top-level totals when the full job ended; reinstall from the latest ZIP if that behavior remains.
+
 ## Excel Is Not Created
 
 - Use a profile or Likes URL rather than a single track URL.
