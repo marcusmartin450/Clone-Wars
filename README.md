@@ -4,6 +4,16 @@ Location Lab is a native macOS utility for applying a test location to a connect
 
 Use Location Lab only on devices you own or are authorized to test. Location simulation can affect apps, automations, and location-based services on the connected iPhone.
 
+## Other Apps
+
+### [SoundCloud Manager](soundcloud-scraper/README.md)
+
+SoundCloud Manager is a beginner-friendly Mac application for collecting SoundCloud tracks, creating organized Excel workbooks, and downloading selected tracks or playlists through a simple GUI.
+
+- [Open the SoundCloud Manager guide](soundcloud-scraper/README.md)
+- [Download SoundCloud Manager for Mac](soundcloud-scraper/dist/SoundCloud-Manager-Mac.zip)
+- [Read the troubleshooting guide](soundcloud-scraper/TROUBLESHOOTING.md)
+
 ## Download and install
 
 Open the repository's **Releases** page and download one of these files:
