@@ -12,6 +12,95 @@
 - After setup finishes, double-click `SoundCloud Manager.app` whenever you want to use it.
 - If macOS blocks either file, right-click it, choose `Open`, and confirm `Open` again.
 
+## Beginner Tutorial
+
+You do not need to know how to program or use Terminal. Follow these steps in order.
+
+### 1. Download and Unzip
+
+1. Click [`SoundCloud-Manager-Mac.zip`](dist/SoundCloud-Manager-Mac.zip).
+2. Open your Mac's `Downloads` folder in Finder.
+3. Double-click the ZIP file if your Mac did not unzip it automatically.
+4. Open the new `SoundCloud Manager` folder.
+5. Keep everything inside this folder together. Do not move only the `.app` file somewhere else.
+
+### 2. Install It One Time
+
+1. Double-click `Install SoundCloud Manager.command`.
+2. If macOS blocks it, right-click the file, choose `Open`, and click `Open` again.
+3. Follow each message that appears.
+4. Keep the setup window open until it says setup is finished.
+5. Setup may take several minutes because it checks and installs the required software.
+6. You do not need to run the installer again unless setup failed or you are repairing the application.
+
+### 3. Open SoundCloud Manager
+
+1. Double-click `SoundCloud Manager.app`.
+2. Your web browser will open the SoundCloud Manager screen.
+3. The application runs privately on your Mac. The local browser address is normal.
+4. If the installer opens instead, allow it to finish and then open the app again.
+
+### 4. Choose Where Music Is Saved
+
+1. Click `Choose Download Folder`.
+2. Select a folder such as `Downloads`, `Music`, or a USB drive.
+3. Confirm the folder.
+4. All downloads started from the GUI will use this folder until you choose another one.
+
+### 5. Copy a SoundCloud Link
+
+1. Open SoundCloud.
+2. Open the track, playlist, profile, or Likes page you want.
+3. Click SoundCloud's `Share` button.
+4. Click `Copy Link`.
+5. Return to SoundCloud Manager and paste the link into the large URL box.
+6. Extra sharing text such as `?si=...` is accepted and removed automatically.
+
+### 6. Download One Track
+
+1. Paste a SoundCloud track link.
+2. Click `Use This URL`.
+3. Check the artist and title shown under `Track Ready`.
+4. Click `Download Track`.
+5. Leave the window open until the progress reaches 100%.
+6. If SoundCloud cannot supply the audio, the app automatically tries a matching YouTube result.
+
+### 7. Download a Playlist
+
+1. Paste a SoundCloud playlist link containing `/sets/`.
+2. Click `Use This URL` and wait while Brave loads the playlist.
+3. Review the track list that appears.
+4. Leave the checkmark beside every track you want to download.
+5. Remove the checkmark beside any track you do not want.
+6. Click `Download Selected`.
+7. Keep SoundCloud Manager open while it works through the playlist.
+8. Watch `Processed X of Y` and the live downloaded, skipped, and failed totals.
+
+### 8. Scrape a Profile or Likes Page
+
+1. Paste a SoundCloud profile link or a link ending in `/likes`.
+2. Enter how many tracks to collect in the `Likes limit` box. Use a number from 1 to 100.
+3. Click `Use This URL`.
+4. Keep the Brave window open while the page is collected.
+5. The app creates CSV and Excel files when the organizer finishes.
+6. Use the displayed track list if you also want to download selected songs.
+
+### 9. Understand the Results
+
+- `Downloaded` means the MP3 was saved successfully.
+- `Skipped` usually means the track was already downloaded.
+- `Failed` means neither the SoundCloud source nor the fallback completed.
+- `Download complete using YouTube fallback` means SoundCloud failed and the alternate source succeeded.
+- A playlist is finished when the status says `Finished` and shows the final totals.
+
+### 10. Find Your Files
+
+1. Open the folder selected in step 4.
+2. MP3 downloads are stored directly in that folder.
+3. CSV and Excel organizer files are stored with the application output files.
+4. Open the Excel workbook to view the cleaned track list, artists, genre sheets, and USB download list.
+5. If something did not work, open [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) and find the matching heading.
+
 ## What the Installer Does
 
 - Creates a private Python environment inside the application folder.
