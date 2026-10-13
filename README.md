@@ -11,6 +11,7 @@ Use Location Lab only on devices you own or are authorized to test. Location sim
 SoundCloud Manager is a beginner-friendly Mac application for collecting SoundCloud tracks, creating organized Excel workbooks, and downloading selected tracks or playlists through a simple GUI.
 
 - [Open the SoundCloud Manager guide](soundcloud-scraper/README.md)
+- [Check the SoundCloud Manager requirements](soundcloud-scraper/REQUIREMENTS.md)
 - [Download SoundCloud Manager for Mac](soundcloud-scraper/dist/SoundCloud-Manager-Mac.zip)
 - [Read the troubleshooting guide](soundcloud-scraper/TROUBLESHOOTING.md)
 

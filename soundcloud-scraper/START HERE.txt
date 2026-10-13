@@ -1,6 +1,8 @@
 SOUNDCLOUD MANAGER - START HERE
 
 - This package is for Mac.
+- IMPORTANT: Install Brave Browser before setup: https://brave.com/download/
+- Brave is required for playlists, profiles, Likes pages, and new scraped Excel workbooks.
 - Double-click Install SoundCloud Manager.command one time.
 - Follow the setup messages.
 - Setup installs the pinned nightly yt-dlp build and required Python packages.
@@ -18,4 +20,5 @@ If macOS blocks the installer or app:
 - Click Open again.
 
 Open README.md for the full guide.
+Open REQUIREMENTS.md before installation.
 Open TROUBLESHOOTING.md for help with DRM, unavailable streams, setup, and output folders.

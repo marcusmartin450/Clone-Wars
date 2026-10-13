@@ -4,6 +4,10 @@
 - It creates organized CSV and Excel files and can download selected tracks as MP3 files.
 - New users do not need to run Terminal commands after the one-time installation.
 
+> **Brave Browser is required for playlists, profiles, Likes pages, and creating new scraped Excel workbooks.** Install Brave before setting up SoundCloud Manager: [Download Brave from the official website](https://brave.com/download/).
+
+Before installing, read the complete [`REQUIREMENTS.md`](REQUIREMENTS.md) page.
+
 ## Download the App
 
 - Download [`dist/SoundCloud-Manager-Mac.zip`](dist/SoundCloud-Manager-Mac.zip).
@@ -26,12 +30,14 @@ You do not need to know how to program or use Terminal. Follow these steps in or
 
 ### 2. Install It One Time
 
-1. Double-click `Install SoundCloud Manager.command`.
-2. If macOS blocks it, right-click the file, choose `Open`, and click `Open` again.
-3. Follow each message that appears.
-4. Keep the setup window open until it says setup is finished.
-5. Setup may take several minutes because it checks and installs the required software.
-6. You do not need to run the installer again unless setup failed or you are repairing the application.
+1. First install [Brave Browser](https://brave.com/download/). Playlist, profile, Likes, and scraper features will not work without it.
+2. Open Brave at least once, then close it.
+3. Double-click `Install SoundCloud Manager.command`.
+4. If macOS blocks it, right-click the file, choose `Open`, and click `Open` again.
+5. Follow each message that appears.
+6. Keep the setup window open until it says setup is finished.
+7. Setup may take several minutes because it checks and installs the required software.
+8. You do not need to run the installer again unless setup failed or you are repairing the application.
 
 ### 3. Open SoundCloud Manager
 
@@ -160,11 +166,11 @@ The fallback was verified with `Mellizos & Mixmasters - My Life Is A Disco (In T
 
 ## Requirements
 
-- macOS
-- Python 3
-- Brave Browser
-- FFmpeg
-- Internet access during installation, scraping, and downloading
+- Read the complete [`REQUIREMENTS.md`](REQUIREMENTS.md) page before installation.
+- **Brave Browser is required for full functionality.** [Download Brave for macOS](https://brave.com/download/).
+- Without Brave, direct single-track downloads can still work, but playlists, profiles, Likes scraping, and new scraped Excel workbooks will not work.
+- macOS, Python 3, FFmpeg, and internet access are also required.
+- The one-time installer checks these items and uses Homebrew to install missing software when possible.
 
 Pinned Python packages:
 
