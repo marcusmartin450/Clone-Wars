@@ -15,9 +15,11 @@ SOUNDCLOUD MANAGER - START HERE
 - The progress panel reports when a YouTube fallback succeeds.
 
 If macOS blocks the installer or app:
-- Right-click it.
-- Click Open.
-- Click Open again.
+- Try opening it once, then click Done.
+- Open System Settings > Privacy & Security.
+- Scroll to Security and click Open Anyway.
+- Enter the Mac password and click Open.
+- Open Anyway is normally available for about one hour after the blocked attempt.
 
 Open README.md for the full guide.
 Open REQUIREMENTS.md before installation.

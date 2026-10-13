@@ -1,5 +1,30 @@
 # SoundCloud Manager Troubleshooting
 
+## Apple Could Not Verify the Installer
+
+This warning appears because `Install SoundCloud Manager.command` is not currently signed and notarized with a paid Apple Developer certificate. It does not mean the installer has already failed.
+
+Only override the warning when the ZIP came from this repository and you trust the files.
+
+1. Try to open `Install SoundCloud Manager.command` once.
+2. Click `Done` on the warning.
+3. Open `System Settings` from the Apple menu.
+4. Select `Privacy & Security` and scroll to `Security`.
+5. Find the blocked installer message and click `Open Anyway`.
+6. Enter the Mac login password.
+7. Click `Open` when macOS asks for confirmation.
+
+Apple normally shows `Open Anyway` for about one hour after the blocked attempt. Follow [Apple's official unnotarized-app instructions](https://support.apple.com/en-au/102445) if the wording is different on your macOS version.
+
+If `Open Anyway` is missing:
+
+- Try opening the installer again, then immediately return to `Privacy & Security`.
+- Confirm you are using an administrator account or can enter an administrator password.
+- Re-download the ZIP if it may be incomplete or damaged.
+- Do not disable Gatekeeper for the entire Mac.
+
+The first launch of `SoundCloud Manager.app` may show the same warning. Repeat the steps for the app. A warning-free public release would require Apple Developer signing and Apple notarization.
+
 ## SoundCloud Says the Track Is DRM Protected
 
 - This can appear as `ERROR: [soundcloud] <track id>: This video is DRM protected`.

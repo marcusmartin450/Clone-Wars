@@ -52,6 +52,14 @@ The SoundCloud Manager installer looks for Brave in either of these standard loc
 - Enough free storage for the selected MP3 downloads and Excel files.
 - A reliable internet connection during installation, scraping, and downloading.
 
+## macOS Security Warning
+
+- The current installer and app are not Apple-notarized.
+- macOS may say Apple cannot verify the installer or developer.
+- After attempting to open the installer, use `System Settings` > `Privacy & Security` > `Open Anyway`.
+- Only override the warning for a ZIP downloaded from this repository that you trust.
+- See the detailed steps in [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) and [Apple's official guidance](https://support.apple.com/en-au/102445).
+
 ## Required Software
 
 ### Python 3

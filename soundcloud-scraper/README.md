@@ -39,6 +39,26 @@ You do not need to know how to program or use Terminal. Follow these steps in or
 7. Setup may take several minutes because it checks and installs the required software.
 8. You do not need to run the installer again unless setup failed or you are repairing the application.
 
+### If Apple Says It Cannot Verify the Installer
+
+SoundCloud Manager is not currently signed and notarized with a paid Apple Developer certificate. macOS may display `Apple could not verify` or say the developer cannot be verified.
+
+Only continue if you downloaded the ZIP from this repository and trust the files.
+
+1. Try to open `Install SoundCloud Manager.command` once.
+2. Click `Done` when macOS blocks it.
+3. Open the Apple menu and choose `System Settings`.
+4. Select `Privacy & Security`.
+5. Scroll down to the `Security` section.
+6. Find the message about `Install SoundCloud Manager.command`.
+7. Click `Open Anyway`.
+8. Enter the Mac login password when asked.
+9. Click `Open` to start the installer.
+
+The `Open Anyway` button is normally available for about one hour after the blocked attempt. See [Apple's instructions for opening an unnotarized app](https://support.apple.com/en-au/102445).
+
+The same steps may be needed the first time `SoundCloud Manager.app` is opened. After macOS saves the exception, the file should open normally in the future.
+
 ### 3. Open SoundCloud Manager
 
 1. Double-click `SoundCloud Manager.app`.
