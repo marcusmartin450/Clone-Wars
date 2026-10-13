@@ -25,6 +25,15 @@ DUPLICATE_ONLY_THRESHOLD = 5
 DEFAULT_GATE_LIMIT = 20
 PAGE_TIMEOUT_MS = 90000
 
+GUEST_DISMISS_SELECTORS = [
+    'button:has-text("Not now")',
+    'button:has-text("Not Now")',
+    'button:has-text("Maybe later")',
+    'button:has-text("Continue without signing in")',
+    '[role="dialog"] button[aria-label="Close"]',
+    '[role="dialog"] .modal__closeButton',
+]
+
 CSV_FIELDS = [
     "track_url",
     "title",
@@ -163,6 +172,47 @@ def build_output_paths(profile_or_likes_url: str):
     csv_file = f"{profile_slug}_likes.csv"
     state_file = f"{profile_slug}_state.json"
     return profile_slug, csv_file, state_file
+
+
+def configure_guest_metadata_page(context, page):
+    def block_media_and_widevine(route):
+        request = route.request
+        request_url = request.url.lower()
+        if request.resource_type == "media" or "widevine" in request_url:
+            route.abort()
+        else:
+            route.continue_()
+
+    context.route("**/*", block_media_and_widevine)
+    page.add_init_script(
+        """
+        (() => {
+          const rejectPlayback = () => Promise.reject(new DOMException('Media playback disabled', 'NotAllowedError'));
+          if (window.HTMLMediaElement) {
+            window.HTMLMediaElement.prototype.play = rejectPlayback;
+          }
+          if (navigator.requestMediaKeySystemAccess) {
+            Object.defineProperty(navigator, 'requestMediaKeySystemAccess', {
+              configurable: false,
+              value: () => Promise.reject(new DOMException('Encrypted media disabled', 'NotSupportedError')),
+            });
+          }
+        })();
+        """
+    )
+
+
+def dismiss_guest_sign_in_prompt(page):
+    for selector in GUEST_DISMISS_SELECTORS:
+        try:
+            locator = page.locator(selector)
+            if locator.count() > 0 and locator.first.is_visible():
+                locator.first.click(timeout=2000)
+                page.wait_for_timeout(300)
+                return True
+        except Exception:
+            continue
+    return False
 
 
 def classify_link(url: str):
@@ -628,18 +678,25 @@ def scrape_all_likes(profile_or_likes_url: str):
         browser = p.chromium.launch(
             executable_path=BRAVE_PATH,
             headless=False,
-            args=["--incognito"]
+            args=[
+                "--incognito",
+                "--autoplay-policy=user-gesture-required",
+                "--disable-component-update",
+            ]
         )
 
         context = browser.new_context()
         page = context.new_page()
+        configure_guest_metadata_page(context, page)
 
         print(f"Opening Brave incognito at: {likes_url}")
         page.goto(likes_url, wait_until="domcontentloaded", timeout=PAGE_TIMEOUT_MS)
         page.wait_for_timeout(5000)
+        dismiss_guest_sign_in_prompt(page)
 
         while True:
             cycle += 1
+            dismiss_guest_sign_in_prompt(page)
             candidate_tracks = extract_visible_track_data(page)
             current_candidate_count = len(candidate_tracks)
             cycle_new = 0

@@ -83,15 +83,22 @@ def scrape_likes(
         launch_kwargs = {"headless": False}
         if brave_path:
             launch_kwargs["executable_path"] = brave_path
-            launch_kwargs["args"] = ["--incognito"]
+            launch_kwargs["args"] = [
+                "--incognito",
+                "--autoplay-policy=user-gesture-required",
+                "--disable-component-update",
+            ]
         browser = playwright.chromium.launch(**launch_kwargs)
         context = browser.new_context()
         page = context.new_page()
+        organizer.configure_guest_metadata_page(context, page)
         page.goto(likes_url, wait_until="domcontentloaded", timeout=organizer.PAGE_TIMEOUT_MS)
         page.wait_for_timeout(5000)
+        organizer.dismiss_guest_sign_in_prompt(page)
 
         while True:
             cycle += 1
+            organizer.dismiss_guest_sign_in_prompt(page)
             candidate_tracks = organizer.extract_visible_track_data(page)
             total_found = max(total_found, len(candidate_tracks))
             cycle_new = 0

@@ -1,0 +1,15 @@
+#!/bin/bash
+set -euo pipefail
+
+MACOS_DIR="$(cd "$(dirname "$0")" && pwd)"
+CONTENTS_DIR="$(cd "$MACOS_DIR/.." && pwd)"
+APP_DIR="$(cd "$CONTENTS_DIR/.." && pwd)"
+PACKAGE_DIR="$(cd "$APP_DIR/.." && pwd)"
+
+if [[ ! -x "$PACKAGE_DIR/.venv/bin/python" ]]; then
+  /usr/bin/open "$PACKAGE_DIR/Install SoundCloud Manager.command"
+  exit 0
+fi
+
+cd "$PACKAGE_DIR"
+exec "$PACKAGE_DIR/.venv/bin/python" "$PACKAGE_DIR/soundcloud_easy_start.py"

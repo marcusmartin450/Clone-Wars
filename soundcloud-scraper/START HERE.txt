@@ -1,0 +1,21 @@
+SOUNDCLOUD MANAGER - START HERE
+
+- This package is for Mac.
+- Double-click Install SoundCloud Manager.command one time.
+- Follow the setup messages.
+- Setup installs the pinned nightly yt-dlp build and required Python packages.
+- Setup can install Brave and FFmpeg through Homebrew when Homebrew is available.
+- After setup, double-click SoundCloud Manager.app.
+- Paste a SoundCloud track, playlist, profile, or Likes URL.
+- Click Use This URL.
+- Use Choose Download Folder before downloading songs.
+- Downloads try SoundCloud first and use a YouTube search only when SoundCloud fails.
+- The progress panel reports when a YouTube fallback succeeds.
+
+If macOS blocks the installer or app:
+- Right-click it.
+- Click Open.
+- Click Open again.
+
+Open README.md for the full guide.
+Open TROUBLESHOOTING.md for help with DRM, unavailable streams, setup, and output folders.

@@ -1,166 +1,126 @@
-# SoundCloud Scraper and Organizer
+# SoundCloud Manager for Mac
 
-- This is my SoundCloud scraper and organizer.
-- I use it to pull tracks from a SoundCloud profile or Likes page.
-- It saves the links in a CSV file.
-- It organizes the tracks into an Excel workbook.
-- This guide only covers the latest app and scraper files.
+- SoundCloud Manager provides one simple GUI for tracks, playlists, profiles, and Likes pages.
+- It creates organized CSV and Excel files and can download selected tracks as MP3 files.
+- New users do not need to run Terminal commands after the one-time installation.
 
-## What It Does
+## Download the App
 
-- Opens SoundCloud in Brave Private Browsing.
-- Collects the track, artist, title, genre, download, and buy links.
-- Saves new tracks without deleting tracks already collected.
-- Creates a cleaned CSV file.
-- Creates an Excel workbook with separate genre sheets.
-- Puts the genre sheets in alphabetical order.
-- Keeps an `All Tracks Cleaned` sheet.
-- Keeps a `Genre Mapping` sheet.
-- Keeps a `USB Download List` sheet.
+- Download [`dist/SoundCloud-Manager-Mac.zip`](dist/SoundCloud-Manager-Mac.zip).
+- Unzip it on a Mac.
+- Double-click `Install SoundCloud Manager.command` one time.
+- After setup finishes, double-click `SoundCloud Manager.app` whenever you want to use it.
+- If macOS blocks either file, right-click it, choose `Open`, and confirm `Open` again.
 
-## What I Need
+## What the Installer Does
 
-- A Mac.
-- Python 3.
-- Brave Browser.
-- The project folder.
-- The `.venv` virtual environment.
-- Playwright, openpyxl, and yt-dlp installed in the virtual environment.
-- Brave installed here:
+- Creates a private Python environment inside the application folder.
+- Installs the pinned dependencies from `requirements.txt`.
+- Uses the tested nightly `yt-dlp` build instead of the standard release.
+- Checks for Python 3, Brave Browser, and FFmpeg.
+- Uses Homebrew to install missing system packages when Homebrew is available.
+- Opens the official download page when a required application must be installed manually.
+
+## Use the GUI
+
+- Paste a SoundCloud track, playlist, profile, or Likes URL.
+- Set the Likes limit from 1 to 100 when using a profile or Likes page.
+- Click `Use This URL`.
+- Use `Choose Download Folder` before downloading if you want a different destination.
+- Track and playlist downloads run in the background so the GUI stays responsive.
+- The progress panel displays live status and final downloaded, skipped, and failed counts.
+
+## Track Downloads
+
+- The application always tries the original SoundCloud URL first with its pinned nightly `yt-dlp` installation.
+- If SoundCloud reports an unavailable stream, HTTP error, or DRM-protected track, the application searches YouTube using the scraped artist and title.
+- The first matching YouTube result is downloaded only after the SoundCloud attempt fails.
+- The GUI reports `Download complete using YouTube fallback` when the alternate source succeeds.
+- MP3 quality is set to `0`, artwork is converted to JPG and embedded, track metadata is added, and the genre is set to House.
+- Downloads are saved in the folder selected in the GUI.
+
+The fallback was verified with `Mellizos & Mixmasters - My Life Is A Disco (In The Mix)` after SoundCloud track `2314350962` returned a DRM error.
+
+## Playlist Downloads
+
+- Playlist pages are opened through Brave Private Browsing.
+- The GUI displays the tracks before downloading.
+- Select the tracks you want and click `Download Selected`.
+- Playlist order is preserved and existing downloads can be skipped.
+
+## Profile and Likes Pages
+
+- The scraper opens the page through Brave Private Browsing.
+- It collects the requested number of tracks and preserves previously collected rows.
+- It creates CSV and Excel files and displays the scraped tracks in the GUI.
+- Select tracks and click `Download Selected Songs` to download them in the background.
+
+## Excel Workbook
+
+- `All Tracks Cleaned` contains the cleaned track list.
+- `Genre Mapping` explains how genres were organized.
+- `Artist Index` sorts tracks by artist and title and includes clickable SoundCloud, download, and buy links.
+- `USB Download List` is ready for selected tracks.
+- Every organized genre receives its own alphabetically arranged worksheet.
+
+## Terminal Helper
+
+- `scdl.sh` keeps the terminal helper available for advanced users.
+- Its default download destination remains `/Users/nickswatts/Music/usb`.
+- The GUI destination setting does not change the terminal helper destination.
+
+## Requirements
+
+- macOS
+- Python 3
+- Brave Browser
+- FFmpeg
+- Internet access during installation, scraping, and downloading
+
+Pinned Python packages:
 
 ```text
-/Applications/Brave Browser.app
+openpyxl==3.1.5
+playwright==1.58.0
+yt-dlp[default]==2026.9.27.232945.dev0
 ```
 
-## Start the App
-
-- Open Terminal.
-- Run:
+## Run from Source
 
 ```bash
-cd ~/Music/sdclscript
-.venv/bin/python soundcloud_gui.py
+cd soundcloud-scraper
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python soundcloud_easy_start.py
 ```
 
-- The app opens in my web browser.
-- The app runs only on my computer through a local address.
-- I can also open `scdl.app` from the project folder.
+## Tests
 
-## Turn On Brave Private Browsing
-
-- Open `Settings` in the app.
-- Turn on `Use Brave Private Browsing for scraping`.
-- Click `Save Settings`.
-- Click `Check Brave`.
-- The app should say that Brave was found.
-
-## Scrape and Make the Excel File
-
-- Open `User Likes`.
-- Set `Max tracks` between 1 and 100.
-- The default is 50.
-- Open `Scraper and Organizer`.
-- Paste a SoundCloud profile or Likes URL.
-- Click `Scrape and Create Excel`.
-- Let Brave finish loading and collecting the tracks.
-- Click `Open Most Recent Excel` when it is done.
-- Use `Scrape Only` when I only want to update the main CSV file.
-- Example URL:
-
-```text
-https://soundcloud.com/marcusmartin450/likes
+```bash
+.venv/bin/python -m unittest -v test_easy_gui.py test_soundcloud_exact_downloader.py
 ```
 
-## Files It Creates
-
-- For a profile named `marcusmartin450`, the app creates:
-
-```text
-marcusmartin450_likes.csv
-marcusmartin450_state.json
-marcusmartin450_likes_cleaned.csv
-marcusmartin450_likes_organized.xlsx
-AddToUSBDownloadList.bas
-```
-
-### Main CSV
-
-- `marcusmartin450_likes.csv` is the main saved list.
-- New tracks are added to it.
-- Tracks already saved are skipped.
-
-### State File
-
-- `marcusmartin450_state.json` keeps information about the last run.
-- It also keeps the number of saved tracks.
-
-### Cleaned CSV
-
-- `marcusmartin450_likes_cleaned.csv` removes exact duplicate rows.
-- It adds the cleaned genre and website fields.
-
-### Excel Workbook
-
-- `marcusmartin450_likes_organized.xlsx` contains:
-- `All Tracks Cleaned`
-- `Genre Mapping`
-- `USB Download List`
-- One sheet for every organized genre
-- The genre sheets are arranged alphabetically.
-- Tracks with Hypeddit or Hypeedit links are placed under House using my current organizer rule.
+- The fallback tests confirm that nightly `yt-dlp` attempts SoundCloud first and only then uses a YouTube search.
+- The packaged application was compiled and tested from a clean ZIP extraction.
+- See [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) for common errors and recovery steps.
 
 ## Important Notes
 
-- The app saves up to 100 new tracks in one run.
-- Run it again to keep adding new tracks.
-- Do not delete the main CSV if I want the scraper to remember tracks already collected.
-- A download link can lead to a download page instead of a direct audio file.
-- Missing links stay blank.
-- The app should not make up a link.
-- The app uses `sc_likes_scraper4_organized_outputs.py`.
-- Do not use `sc_likes_scraper4_organized_outputs (1).py`.
-- The extra copy is not connected to the app.
+- Only download audio you have permission to download.
+- A YouTube search can return a different edit, remix, or upload; verify the finished track before using it.
+- Private, removed, region-restricted, or unavailable tracks can still fail on both services.
+- The package does not include passwords, browser cookies, account credentials, downloaded music, or personal scrape data.
+- Do not delete the main profile CSV if you want scraper progress to be preserved.
 
-## If Something Does Not Work
+## Main Files
 
-### Brave Is Not Found
-
-- Install Brave in the main Applications folder.
-- Use `Settings` > `Check Brave` again.
-
-### A Python Package Is Missing
-
-- Run:
-
-```bash
-cd ~/Music/sdclscript
-.venv/bin/python -m pip install playwright openpyxl yt-dlp
-```
-
-### The App Does Not Open
-
-- Start it from Terminal so I can see the error:
-
-```bash
-cd ~/Music/sdclscript
-.venv/bin/python soundcloud_gui.py
-```
-
-### The Workbook Does Not Open
-
-- Check that this file exists in the project folder:
-
-```text
-marcusmartin450_likes_organized.xlsx
-```
-
-- Open it directly in Excel.
-
-## Main Files Used by the Latest Version
-
-- `soundcloud_gui.py` runs the app screen.
-- `soundcloud_scraper_backend.py` opens Brave and collects the tracks.
-- `sc_likes_scraper4_organized_outputs.py` cleans the data and creates the Excel workbook.
-- `soundcloud_backend.py` handles settings and downloads.
-- The older scraper files are kept for history.
-- They are not the version I use for this workflow.
+- `SoundCloud Manager.app` starts the GUI.
+- `Install SoundCloud Manager.command` performs the one-time installation.
+- `soundcloud_easy_gui.py` provides the one-URL interface and background progress display.
+- `soundcloud_easy_start.py` enables the integrated application features.
+- `soundcloud_exact_downloader.py` performs nightly-first SoundCloud downloading and YouTube fallback.
+- `soundcloud_download_jobs.py` manages background downloads and result counts.
+- `soundcloud_artist_extension.py` creates the Artist Index worksheet.
+- `soundcloud_playlist_browser.py` loads playlists through Brave.
+- `soundcloud_scraper_backend.py` collects profile and Likes tracks.
+- `sc_likes_scraper4_organized_outputs.py` creates the CSV and Excel outputs.

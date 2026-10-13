@@ -1,3 +1,10 @@
 .build/
 build/
 .DS_Store
+soundcloud-scraper/.venv/
+soundcloud-scraper/.app_data/
+soundcloud-scraper/__pycache__/
+soundcloud-scraper/*.csv
+soundcloud-scraper/*.xlsx
+soundcloud-scraper/*_state.json
+soundcloud-scraper/*.mp3

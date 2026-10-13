@@ -278,6 +278,19 @@ def track_summary_from_metadata(metadata: dict[str, object], url: str) -> dict:
     }
 
 
+def track_summary_from_url(url: str) -> dict:
+    normalized = normalize_soundcloud_url(url)
+    parts = [part for part in urlparse(normalized).path.split("/") if part]
+    artist_slug = parts[-2] if len(parts) >= 2 else ""
+    title_slug = parts[-1] if parts else ""
+    return {
+        "track_url": normalized,
+        "title": title_slug.replace("-", " ").title(),
+        "artist": artist_slug.replace("-", " ").title(),
+        "artwork_url": "",
+    }
+
+
 @dataclass
 class DownloadResult:
     url: str
@@ -287,6 +300,7 @@ class DownloadResult:
     output_path: str = ""
     error: str = ""
     skipped_reason: str = ""
+    download_source: str = "soundcloud"
 
     def to_history_entry(self, source_type: str, target_dir: Path) -> dict:
         data = asdict(self)
@@ -302,6 +316,7 @@ def download_track(
     target_dir: Path,
     source_type: str = "single",
     progress_callback: Callable[[str], None] | None = None,
+    track_info: dict | None = None,
 ) -> DownloadResult:
     normalized = normalize_soundcloud_url(url)
     duplicate = detect_existing_download(normalized)
@@ -325,6 +340,7 @@ def download_track(
     mp3_path = unique_target(target_dir, base_name, "mp3")
     output_template = str(mp3_path.with_suffix(".%(ext)s"))
     command = ytdlp_base_command() + [
+        "--newline",
         "-x",
         "--audio-format",
         "mp3",
